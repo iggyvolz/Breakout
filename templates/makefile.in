@@ -8,6 +8,7 @@ debug:
 	$(FLEXPATH)fdb $(DEBUGPATH)bin/$(target).swf
 gen: generate-files
 generate-files: generate-assets-files
+gaf: generate-assets-files
 generate-assets-files:
 	rm -Rf src/assets
 	mkdir src/assets
