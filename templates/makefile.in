@@ -1,0 +1,18 @@
+target=Breakout,debug=true,height=550,width=640,FLEXPATH=,DEBUGPATH=
+build: gen
+	mkdir -p bin
+	$(FLEXPATH)mxmlc src/$(target).as -debug=$(debug) -default-size=$(width),$(height) -output bin/$(target).swf
+open:
+	open bin/$(target).swf
+debug:
+	$(FLEXPATH)fdb $(DEBUGPATH)bin/$(target).swf
+gen: generate-files
+generate-files: generate-assets-files
+generate-assets-files:
+	rm -Rf src/assets
+	mkdir src/assets
+	$(foreach file,$(wildcard assets/*), php generators/generate-assets-file.php "$(file)";)
+clean:
+	$(foreach file,$(shell cat .gitignore), rm -Rf "$(file)";)
+clean-no-makefile:
+	$(foreach file,$(shell cat .gitignore|grep -v makefile), rm -Rf "$(file)";)
