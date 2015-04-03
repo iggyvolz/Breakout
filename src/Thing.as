@@ -10,6 +10,8 @@ package
     private var _x:uint=0;
     private var _y:uint=0;
     public var inactive:Boolean=false;
+    public static const WIDTH:uint=50;
+    public static const HEIGHT:uint=12;
     public function Thing(__x:uint,__y:uint)
     {
       _x=__x;
@@ -25,31 +27,59 @@ package
     }
     public function handleCheckBall(e:*):void
     {
-      var ball:Ball=Ball.api; // THIS IS THE PART I MUST FIX
-      if(ball.x+15>x&&ball.x+15<x+25&&ball.y>y&&ball.y+15<y+6)
+      var ball:Ball=Ball.api;
+      var i:uint;
+      var cx:uint;
+      var cy:uint;
+      for(i=0;i<HEIGHT;i++)
       {
-        ball.ballBad(0);
-        level++;
-        return;
+        cx=x;
+        cy=y+i;
+        if(check(cx,cy,ball))
+        {
+          level++;
+          ball.ballBad(0);
+          return;
+        }
       }
-      if(ball.y+15>y&&ball.y+15<y+6&&ball.x>ball.x&&ball.x+15<ball.x+25)
+      for(i=0;i<HEIGHT;i++)
       {
-        ball.ballBad(1);
-        level++;
-        return;
+        cx=x+WIDTH;
+        cy=y+i;
+        if(check(cx,cy,ball))
+        {
+          level++;
+          ball.ballBad(2);
+          return;
+        }
       }
-      if(ball.x<x+50&&ball.x>x+25&&ball.y>y&&ball.y+15<y+6)
+      for(i=0;i<WIDTH;i++)
       {
-        ball.ballBad(2);
-        level++;
-        return;
+        cx=x+i;
+        cy=y;
+        if(check(cx,cy,ball))
+        {
+          level++;
+          ball.ballBad(1);
+          return;
+        }
       }
-      if(ball.y<y+12&&ball.y>y+6&&ball.x>ball.x&&ball.x+15<ball.x+25)
+      for(i=0;i<WIDTH;i++)
       {
-        ball.ballBad(3);
-        level++;
-        return;
+        cx=x+i;
+        cy=y+HEIGHT;
+        if(check(cx,cy,ball))
+        {
+          trace(3);
+          level++;
+          ball.ballBad(3);
+          return;
+        }
       }
+    }
+    private function check(cx:uint,cy:uint,ball:Ball):Boolean
+    {
+      return (Math.pow((cx-ball.x-(Math.sqrt(30)/2)),2)+Math.pow((cy-ball.y-(Math.sqrt(30)/2)),2)<=15);
     }
     public function get level():uint
     {

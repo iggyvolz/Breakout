@@ -12,6 +12,8 @@ package
     private var isUp:Boolean=true;
     private var isRight:Boolean=true;
     private const SPEED:uint=1;
+    public static const WIDTH:uint=15;
+    public static const HEIGHT:uint=15;
     public function Ball(__x:uint,__y:uint)
     {
       _x=__x;
@@ -28,24 +30,19 @@ package
     }
     public function ballBad(side:uint):void // side: 0=left, 1=top, 2=right, 3=bottom
     {
-      if(ballIsBad)
-      {
-        return;
-      }
-      ballIsBad=true;
       switch(side)
       {
         case 0:
-          isRight=false;
-          break;
-        case 1:
-          isUp=false;
-          break;
-        case 2:
           isRight=true;
           break;
-        case 3:
+        case 1:
           isUp=true;
+          break;
+        case 2:
+          isRight=false;
+          break;
+        case 3:
+          isUp=false;
           break;
         default:
           throw new Error("Illegal side "+side);
@@ -54,24 +51,27 @@ package
     }
     public function handleEnterFrame(e:Event):void
     {
-      if(isUp)
+      //ballIsBad=false;
+      for(var i:uint=0;i<SPEED;i++)
       {
-        y-=SPEED;
+        if(isUp)
+        {
+          y--;
+        }
+        else
+        {
+          y++;
+        }
+        if(isRight)
+        {
+          x++;
+        }
+        else
+        {
+          x--;
+        }
+        stage.dispatchEvent(new Event("CHECK_THE_BALL"));
       }
-      else
-      {
-        y+=SPEED;
-      }
-      if(isRight)
-      {
-        x+=SPEED;
-      }
-      else
-      {
-        x-=SPEED;
-      }
-      ballIsBad=false;
-      stage.dispatchEvent(new Event("CHECK_THE_BALL"));
     }
   }
 }
