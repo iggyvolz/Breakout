@@ -21,6 +21,35 @@ package
     {
       x=_x;
       y=_y;
+      stage.addEventListener("CHECK_THE_BALL",handleCheckBall);
+    }
+    public function handleCheckBall(e:*):void
+    {
+      var ball:Ball=Ball.api; // THIS IS THE PART I MUST FIX
+      if(ball.x+15>x&&ball.x+15<x+25&&ball.y>y&&ball.y+15<y+6)
+      {
+        ball.ballBad(0);
+        level++;
+        return;
+      }
+      if(ball.y+15>y&&ball.y+15<y+6&&ball.x>ball.x&&ball.x+15<ball.x+25)
+      {
+        ball.ballBad(1);
+        level++;
+        return;
+      }
+      if(ball.x<x+50&&ball.x>x+25&&ball.y>y&&ball.y+15<y+6)
+      {
+        ball.ballBad(2);
+        level++;
+        return;
+      }
+      if(ball.y<y+12&&ball.y>y+6&&ball.x>ball.x&&ball.x+15<ball.x+25)
+      {
+        ball.ballBad(3);
+        level++;
+        return;
+      }
     }
     public function get level():uint
     {
@@ -28,9 +57,10 @@ package
     }
     public function set level(c:uint):void
     {
+      if(inactive) {return;}
       removeChild(levels[_level]);
       _level=c;
-      if(_level>4) {inactive=true;return;}
+      if(_level>2) {inactive=true;return;}
       addChild(levels[c]);
     }
   }
